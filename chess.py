@@ -21,14 +21,21 @@ pieces = {"Black_Castle":"\u2656","Black_Knight":"\u2658",
           "Black_Queen":"\u2655","Black_Pawn":"\u2659",
           "White_Castle":"\u265C","White_Knight":"\u265E",
           "White_Bishop":"\u265D","White_Queen":"\u265B",
-          "White_King":"\u265A","White_Pawn":"\u265F"}
+          "White_King":"\u265A","White_Pawn":"\u265F","\u2610":"Empty"}
 
 colour = {"\u2656":"Black","\u2658":"Black",
           "\u2657":"Black","\u2654":"Black",
           "\u2655":"Black","\u2659":"Black",
           "\u265C":"White","\u265E":"White",
           "\u265D":"White","\u265B":"White",
-          "\u265A":"White","\u265F":"White"}
+          "\u265A":"White","\u265F":"White","\u2610":"Empty"}
+
+ptype = {"\u2656":"Castle","\u2658":"Knight",
+          "\u2657":"Bishop","\u2654":"King",
+          "\u2655":"Queen","\u2659":"Pawn",
+          "\u265C":"Castle","\u265E":"Knight",
+          "\u265D":"Bishop","\u265B":"King",
+          "\u265A":"Queen","\u265F":"Pawn","\u2610":"Empty"}
 
 rank = [8,7,6,5,4,3,2,1]
 file = ["a","b","c","d","e","f","g","h"]
@@ -86,7 +93,8 @@ def main():
     # moved from and the square moved to
     win = False
     turn = 0
-    
+    Whites_won = []
+    Blacks_won = []
     while win == False:
         
         turn += 1
@@ -115,15 +123,19 @@ def main():
             #by running them through their functions above
             
             from_rank_file = move_from(move_from_input) 
-        
+            
+                   
             rank_from = from_rank_file[0]
             file_from = from_rank_file[1]
-        
+            
+                    
             to_rank_file = move_to(move_to_input) 
-         
+            
+                     
             rank_to = to_rank_file[0]
             file_to = to_rank_file[1]
-                               
+            
+                                           
             # Transform the human user input to grid coordinates that python understands
         
             row_from = 8 - int(rank_from)
@@ -131,10 +143,13 @@ def main():
             row_to = 8 - int(rank_to)
             col_to = file.index(file_to)
                        
+                     
             #Get the piece type
             
             piece = board[row_from][col_from]
                     
+            
+            
             # Tell the user what piece they are moving and where to
         
             print(f"You are moving {board[row_from][col_from]} from {move_from_input} to {move_to_input}")
@@ -156,46 +171,231 @@ def main():
                             
             
             #FOR TESTING ONLY
-            #legal = True
+            legal = True
             #print("rank_from",rank_from, "rank_to",rank_to)
-            #print("row_from",rank_from, "row_to",rank_to)
-            
-             
+            #print("row_from",row_from, "row_to",row_to)
+            #print("file_from",file_from, "file_to",file_to)
+            #print("col_from",col_from, "col_to",col_to)
+            """
+            #____________________________________________________
              
             # Check if the piece type move is legal
              
-            # for pawn legal move check
-         
-            """
-             
-            if  piece == pieces["Black_Pawn"] and int(rank_to) == (int(rank_from) - 1) and turn !=1: 
-                legal = True
-             
-            elif piece == pieces["Black_Pawn"] and int(rank_to) == (int(rank_from) - 2) and turn ==1:
-                legal = True             
+           
             
-            elif  piece == pieces["White_Pawn"] and int(rank_to) == (int(rank_from) + 1) and turn !=1: 
+            # List all legal moves for each piece
+            
+            #____________________________________________________
+            """
+            #PAWNS
+             
+            if  piece == pieces["White_Pawn"] and int(row_to) == (int(row_from) - 1) and row_from != 6 and int(col_to) == int(col_from) and board[row_to][col_to] == "\u2610": 
                 legal = True
              
-            elif piece == pieces["White_Pawn"] and int(rank_to) == ((int(rank_from) + 2) or (int(rank_from) + 1)) and turn ==1:
+            elif piece == pieces["White_Pawn"] and (int(row_to) == int(row_from) - 2 or int(row_to) == int(row_from) - 1) and row_from == 6 and int(col_to) == int(col_from) and board[row_to][col_to] == "\u2610":
+                legal = True   
+                
+            elif piece == pieces["White_Pawn"] and int(row_to) == (int(row_from) - 1) and int(col_to) == int(col_from) + 1 and colour[board[row_to][col_to]] == "Black":
+                legal = True  
+                if board[row_to][col_to] != "\u2610":
+                    print("")
+                    Blacks_won += board[row_to][col_to]
+                    print(f"You took Black's {ptype[board[row_to][col_to]]}!")
+                    Blacks_won
+                    print("")
+                else: break    
+            elif piece == pieces["White_Pawn"] and int(row_to) == (int(row_from) - 1) and int(col_to) == int(col_from) - 1  and colour[board[row_to][col_to]] == "Black":
+                legal = True 
+                if board[row_to][col_to] != "\u2610":
+                    print("")
+                    Blacks_won += board[row_to][col_to]
+                    print(f"You took Black's {ptype[board[row_to][col_to]]}!")
+                    Blacks_won
+                    print("")
+                else: break 
+                    
+            elif piece == pieces["Black_Pawn"] and int(row_to) == (int(row_from) + 1) and row_from != 1 and int(col_to) == int(col_from) and board[row_to][col_to] == "\u2610": 
                 legal = True
+             
+            elif piece == pieces["Black_Pawn"] and (int(row_to) == int(row_from) + 2 or int(row_to) == int(row_from) + 1) and row_from == 1 and int(col_to) == int(col_from) and board[row_to][col_to] == "\u2610":
+                legal = True 
+                
+            elif piece == pieces["Black_Pawn"] and int(row_to) == (int(row_from) + 1) and int(col_to) == int(col_from) + 1 and colour[board[row_to][col_to]] == "White":
+                legal = True  
+                if board[row_to][col_to] != "\u2610":
+                    print("")
+                    Whites_won += board[row_to][col_to]
+                    print(f"You took Black's {ptype[board[row_to][col_to]]}!")
+                    Whites_won
+                    print("")
+                else: break            
+                
+            elif piece == pieces["Black_Pawn"] and int(row_to) == (int(row_from) + 1) and int(col_to) == int(col_from) - 1 and colour[board[row_to][col_to]] == "White":
+                legal = True  
+                if board[row_to][col_to] != "\u2610":
+                    print("")
+                    Whites_won += board[row_to][col_to]
+                    print(f"You took Black's {ptype[board[row_to][col_to]]}!")
+                    Whites_won
+                    print("")
+                else: break
+            
             else: 
                 print("")
                 print_board(board)
+                print("")
                 print("That move is not legal, make a different move !!")
-                print("")    
-                     
-                 #elif turn == 1 and piece == pieces["Black_Pawn"] and rank_to != int(rank_from) - 2: 
+                print("")  
              
-                     #print("That move is not legal, make a different move!!")
+            """
                  
-                     #print("")
+            
+             #_____________________________________________________________
+             #KNIGHTS
+            
+            
+            if ptype[piece] == "Knight" and (int(row_to) == (int(row_from) - 1) or int(row_to) == (int(row_from) + 1)) and (int(col_to) == int(col_from) - 2 or int(col_to) == int(col_from) + 2) and board[row_to][col_to] == "\u2610":
+                legal = True
+                
+            elif ptype[piece] == "Knight" and (int(row_to) == (int(row_from) - 2) or int(row_to) == (int(row_from) + 2)) and (int(col_to) == int(col_from) - 1 or int(col_to) == int(col_from) + 1) and board[row_to][col_to] == "\u2610":   
+                legal = True
+                
+            elif ptype[piece] == "Knight" and (int(row_to) == (int(row_from) - 1) or int(row_to) == (int(row_from) + 1)) and (int(col_to) == int(col_from) - 2 or int(col_to) == int(col_from) + 2) and board[row_to][col_to] != "\u2610" and colour[piece] != colour[board[row_to][col_to]]:
+                legal = True
+                print("")                
+                print(f"You took {colour[board[row_to][col_to]]}'s {ptype[board[row_to][col_to]]}!")
+                if colour[board[row_to][col_to]] == "White":
+                    Whites_won += board[row_to][col_to]
+                    print(Whites_won)
+                    print("")
+                    
+                elif colour[board[row_to][col_to]] == "Black":
+                    Blacks_won += board[row_to][col_to]
+                    print(Blacks_won)
+                    print("")
+                    
+            elif ptype[piece] == "Knight" and (int(row_to) == (int(row_from) - 2) or int(row_to) == (int(row_from) + 2)) and (int(col_to) == int(col_from) - 1 or int(col_to) == int(col_from) + 1) and board[row_to][col_to] != "\u2610" and colour[piece] != colour[board[row_to][col_to]]:
+                legal = True
+                print("")                
+                print(f"You took {colour[board[row_to][col_to]]}'s {ptype[board[row_to][col_to]]}!")
+                if colour[board[row_to][col_to]] == "White":
+                    Whites_won += board[row_to][col_to]
+                    print(Whites_won)
+                    print("")
+                elif colour[board[row_to][col_to]] == "Black":
+                    Blacks_won += board[row_to][col_to]
+                    print(Blacks_won)
+                    
+                    
+               __________________________________________________________     
+               #KING    
+                    
+            if ptype[piece] == "King" and (int(row_to) == (int(row_from) - 1) or int(row_to) == (int(row_from) + 1)) and int(col_to) == int(col_from) and board[row_to][col_to] == "\u2610":
+                legal = True            
+                
+            elif ptype[piece] == "King" and (int(row_to) == (int(row_from) - 1) or int(row_to) == (int(row_from) + 1)) and int(col_to) == int(col_from) and board[row_to][col_to] != "\u2610" and colour[piece] != colour[board[row_to][col_to]]:
+                legal = True
+                print("")                
+                print(f"You took {colour[board[row_to][col_to]]}'s {ptype[board[row_to][col_to]]}!")
+                if colour[board[row_to][col_to]] == "White":
+                    Whites_won += board[row_to][col_to]
+                    print(Whites_won)
+                    print("")
+                    
+                elif colour[board[row_to][col_to]] == "Black":
+                    Blacks_won += board[row_to][col_to]
+                    print(Blacks_won)
+                    print("")
+            
+            elif ptype[piece] == "King" and int(row_to) == int(row_from) and (int(col_to) == int(col_from) - 1 or int(col_to) == int(col_from) + 1) and board[row_to][col_to] == "\u2610":   
+                legal = True
+                
+            elif ptype[piece] == "King" and int(row_to) == int(row_from) and (int(col_to) == int(col_from) - 1 or int(col_to) == int(col_from) + 1) and board[row_to][col_to] != "\u2610" and colour[piece] != colour[board[row_to][col_to]]:
+                legal = True
+                print("")                
+                print(f"You took {colour[board[row_to][col_to]]}'s {ptype[board[row_to][col_to]]}!")
+                if colour[board[row_to][col_to]] == "White":
+                    Whites_won += board[row_to][col_to]
+                    print(Whites_won)
+                    print("")
+                elif colour[board[row_to][col_to]] == "Black":
+                    Blacks_won += board[row_to][col_to]
+                    print(Blacks_won)     
+                    
+            elif ptype[piece] == "King" and (int(row_to) == (int(row_from) - 1) or int(row_to) == (int(row_from) + 1)) and (int(col_to) == int(col_from) - 1 or int(col_to) == int(col_from) + 1) and board[row_to][col_to] == "\u2610":   
+                legal = True
+                
+            elif ptype[piece] == "King" and (int(row_to) == (int(row_from) - 1) or int(row_to) == (int(row_from) + 1)) and (int(col_to) == int(col_from) - 1 or int(col_to) == int(col_from) + 1) and board[row_to][col_to] != "\u2610" and colour[piece] != colour[board[row_to][col_to]]:
+                legal = True
+                print("")                
+                print(f"You took {colour[board[row_to][col_to]]}'s {ptype[board[row_to][col_to]]}!")
+                if colour[board[row_to][col_to]] == "White":
+                    Whites_won += board[row_to][col_to]
+                    print(Whites_won)
+                    print("")
+                elif colour[board[row_to][col_to]] == "Black":
+                    Blacks_won += board[row_to][col_to]
+                    print(Blacks_won)         
              
-             
-            """   
+            _____________________________________________________________
+            """# QUEEN 
+            """
+            
+            if ptype[piece] == "Queen" and (int(row_to) == (int(row_from) - range(7)) or int(row_to) == (int(row_from) + range(7))) and int(col_to) == int(col_from) and board[row_to][col_to] == "\u2610":
+                legal = True            
+                
+            elif ptype[piece] == "Queen" and (int(row_to) == (int(row_from) - range(7)) or int(row_to) == (int(row_from) + range(7))) and int(col_to) == int(col_from) and board[row_to][col_to] != "\u2610" and colour[piece] != colour[board[row_to][col_to]]:
+                legal = True
+                print("")                
+                print(f"You took {colour[board[row_to][col_to]]}'s {ptype[board[row_to][col_to]]}!")
+                if colour[board[row_to][col_to]] == "White":
+                    Whites_won += board[row_to][col_to]
+                    print(Whites_won)
+                    print("")
+                    
+                elif colour[board[row_to][col_to]] == "Black":
+                    Blacks_won += board[row_to][col_to]
+                    print(Blacks_won)
+                    print("")
+            
+            elif ptype[piece] == "Queen" and int(row_to) == int(row_from) and board[row_to][col_to] == "\u2610":   
+                legal = True
+                
+            elif ptype[piece] == "Queen" and int(row_to) == int(row_from) and board[row_to][col_to] != "\u2610" and colour[piece] != colour[board[row_to][col_to]]:
+                legal = True
+                print("")                
+                print(f"You took {colour[board[row_to][col_to]]}'s {ptype[board[row_to][col_to]]}!")
+                if colour[board[row_to][col_to]] == "White":
+                    Whites_won += board[row_to][col_to]
+                    print(Whites_won)
+                    print("")
+                elif colour[board[row_to][col_to]] == "Black":
+                    Blacks_won += board[row_to][col_to]
+                    print(Blacks_won)     
+                    
+            elif ptype[piece] == "Queen" and int(col_to) == int(col_from) and board[row_to][col_to] == "\u2610":   
+                legal = True
+                
+            elif ptype[piece] == "Queen" and int(col_to) == int(col_from) and board[row_to][col_to] != "\u2610" and colour[piece] != colour[board[row_to][col_to]]:
+                legal = True
+                print("")                
+                print(f"You took {colour[board[row_to][col_to]]}'s {ptype[board[row_to][col_to]]}!")
+                if colour[board[row_to][col_to]] == "White":
+                    Whites_won += board[row_to][col_to]
+                    print(Whites_won)
+                    print("")
+                elif colour[board[row_to][col_to]] == "Black":
+                    Blacks_won += board[row_to][col_to]
+                    print(Blacks_won)                
+                   
+            """     
+            
+                        
+             #  This is the global else for all of the legal moves
              
             
-         
+                     
+           
         # If the code gets to this point, we have passed legal move and turn 
         #tests so write the move to the board
          
