@@ -67,6 +67,7 @@ def move_to(mt):
 
     return to_rank_file
 
+
 # This section prints the board in a neat way
 
 def print_board(board):
@@ -102,6 +103,7 @@ def main():
         legal = False
         col = False
         
+        
         while (legal == False) or (col == False):
             
             if int(turn)%2 != 0 or turn == 1:
@@ -114,11 +116,33 @@ def main():
                 print("")
             
             print("")
-            move_from_input = str(input("Which rank and file are you moving from in that order?: (eg: 2d): "))
-            print("")
-            move_to_input = str(input("Which rank and file are you moving to?: (eg: 3d): "))
-            print("")
-        
+            
+            # Input resquests and validity checking
+            
+            # Move from:
+                
+            inp_chk = False
+            
+            while inp_chk == False:
+                
+                move_from_input = str(input("Which rank and file are you moving from in that order?: (eg: 2d): "))
+                print("")
+                            
+                if int(move_from_input[0]) in rank and move_from_input[1] in file:
+                    inp_chk = True
+                                
+            # Move to:
+                        
+            inp_chk = False
+            
+            while inp_chk == False:
+                
+                move_to_input = str(input("Which rank and file are you moving to?: (eg: 3d): "))
+                print("")
+                            
+                if int(move_to_input[0]) in rank and move_to_input[1] in file:
+                    inp_chk = True
+            
             # This section separates the rank and file for each of the above inputs 
             #by running them through their functions above
             
@@ -165,30 +189,39 @@ def main():
                 print("")
                 print(f"It's not {colour[piece]}'s turn !!")
                 print("")
+            
                 
-            
-        
-                            
-            
             #FOR TESTING ONLY
-            legal = True
+            
             #print("rank_from",rank_from, "rank_to",rank_to)
             #print("row_from",row_from, "row_to",row_to)
             #print("file_from",file_from, "file_to",file_to)
             #print("col_from",col_from, "col_to",col_to)
+                                
+            
+            
             """
             #____________________________________________________
              
             # Check if the piece type move is legal
              
-           
-            
+                     
             # List all legal moves for each piece
             
-            #____________________________________________________
             """
+            
+            #FOR TESTING ONLY
+            #legal = True
+            #print("rank_from",rank_from, "rank_to",rank_to)
+            #print("row_from",row_from, "row_to",row_to)
+            #print("file_from",file_from, "file_to",file_to)
+            #print("col_from",col_from, "col_to",col_to)
+            
+            
             #PAWNS
-             
+            #____________________________________________________
+            
+            
             if  piece == pieces["White_Pawn"] and int(row_to) == (int(row_from) - 1) and row_from != 6 and int(col_to) == int(col_from) and board[row_to][col_to] == "\u2610": 
                 legal = True
              
@@ -247,13 +280,13 @@ def main():
                 print("That move is not legal, make a different move !!")
                 print("")  
              
-            """
+           
                  
             
              #_____________________________________________________________
              #KNIGHTS
             
-            
+            """
             if ptype[piece] == "Knight" and (int(row_to) == (int(row_from) - 1) or int(row_to) == (int(row_from) + 1)) and (int(col_to) == int(col_from) - 2 or int(col_to) == int(col_from) + 2) and board[row_to][col_to] == "\u2610":
                 legal = True
                 
@@ -286,10 +319,10 @@ def main():
                     Blacks_won += board[row_to][col_to]
                     print(Blacks_won)
                     
-                    
-               __________________________________________________________     
-               #KING    
-                    
+            """   
+            #__________________________________________________________     
+            #KING    
+            """     
             if ptype[piece] == "King" and (int(row_to) == (int(row_from) - 1) or int(row_to) == (int(row_from) + 1)) and int(col_to) == int(col_from) and board[row_to][col_to] == "\u2610":
                 legal = True            
                 
@@ -336,9 +369,9 @@ def main():
                 elif colour[board[row_to][col_to]] == "Black":
                     Blacks_won += board[row_to][col_to]
                     print(Blacks_won)         
-             
-            _____________________________________________________________
-            """# QUEEN 
+            """ 
+            #_____________________________________________________________
+            # QUEEN 
             """
             
             if ptype[piece] == "Queen" and (int(row_to) == (int(row_from) - range(7)) or int(row_to) == (int(row_from) + range(7))) and int(col_to) == int(col_from) and board[row_to][col_to] == "\u2610":
