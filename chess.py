@@ -135,7 +135,9 @@ def main():
                 
                 if len(move_from_input) != 2:
                     print("")
+                    print("-------------------------------------")
                     print(f"'{move_from_input}' is not a valid entry...")
+                    print("-------------------------------------")
                     print("")
                     continue
                 
@@ -162,7 +164,9 @@ def main():
                     piece = board[row_from][col_from]
                 else:
                     print("")
+                    print("-------------------------------------")
                     print(f"'{move_from_input}' is not a valid entry...")
+                    print("-------------------------------------")
                     print("")
                     continue
                     
@@ -170,7 +174,9 @@ def main():
                 
                 if colour[piece] == "Empty":
                     print("")
+                    print("-------------------------------------")
                     print(f"'{move_from_input}' is an empty square...")
+                    print("-------------------------------------")
                     print("")
                     continue
                     
@@ -542,7 +548,8 @@ def main():
                         
             # QUEEN AND BISHOP           
                         
-            elif (ptype[piece] == "Queen" or ptype[piece] == "Bishop") and absrowdiff - absclmdiff == 0 and board[row_to][col_to] == "\u2610":   
+            elif (ptype[piece] == "Queen" or ptype[piece] == "Bishop") and absrowdiff - absclmdiff == 0 and board[row_to][col_to] == "\u2610":
+                
                 if rowdiff > 0 and clmdiff > 0:
                     n = 0
                     for i in range(1,absrowdiff): 
